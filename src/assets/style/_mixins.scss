@@ -1,0 +1,15 @@
+@mixin shadow {
+	box-shadow: 3px 3px 2px 0px black;
+	&:active {
+		box-shadow: 1px 1px 1px 0px black;
+	}
+}
+@mixin scale($scale: 1.1) {
+	&:hover,
+	&:focus {
+		transform: scale($scale);
+	}
+	&:active {
+		transform: scale(1);
+	}
+}
