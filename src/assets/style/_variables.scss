@@ -1,4 +1,10 @@
 //https://coolors.co/4e598c-ffffff-f9c784-fcaf58-ff8c42
-$primary-color: #4e598c;
-$secondary-color: #fcaf58;
-$secondary-color-dark: #ff8c42;
+:root {
+	--color-primary: #4e598c;
+	--color-secondary: #fcaf58;
+	--color-secondary-light: #f9c784;
+	--color-secondary-dark: #ff8c42;
+	--color-bg: whitesmoke;
+}
+$breakpoint-s: 468px;
+$breakpoint-xs: 318px;

@@ -13,3 +13,15 @@
 		transform: scale(1);
 	}
 }
+@mixin name-plate {
+	background-color: var(--color-secondary);
+	padding: 0.5em 1em;
+	text-align: center;
+	color: black;
+	transition: transform 50ms;
+	@include shadow;
+}
+@mixin grid-container {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 15ch);
+}

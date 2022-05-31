@@ -11,16 +11,20 @@ export default { components: { AppNav } };
 </script>
 
 <style lang="scss" scoped>
+@import "@/assets/style/imports";
 .header {
 	display: flex;
 	flex-direction: column;
 	gap: 1em;
 	padding: 1em;
-	background-color: #4e598c;
+	background-color: var(--color-primary);
 	color: whitesmoke;
+	@media (max-width: $breakpoint-s) {
+		gap: 0;
+	}
 	&__title {
 		text-align: center;
-        font-size: 2rem;
+		font-size: 2rem;
 	}
 }
 </style>
