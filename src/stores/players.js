@@ -23,7 +23,7 @@ for (let i = 0; i < 8; i++) {
 				},
 				body: {
 					source: 1,
-					have: 0,
+					have: 1,
 					side: 0,
 				},
 				hands: {

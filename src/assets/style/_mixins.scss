@@ -18,8 +18,14 @@
 	padding: 0.5em 1em;
 	text-align: center;
 	color: black;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	transition: transform 50ms;
 	@include shadow;
+	&:active {
+		transform: translateY(1px);
+	}
 }
 @mixin grid-container {
 	display: grid;

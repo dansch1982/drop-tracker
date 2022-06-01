@@ -1,13 +1,12 @@
 <template>
 	<main class="main">
 		<section class="main__grid">
-			<AppMainCard v-for="({ name, items }, index) in playerStore.players" :key="index" class="main__grid__card">
+			<AppMainCard v-for="({ name, items }, index) in playerStore.players" :key="index" class="main__grid__card" :data-player="name">
 				<h2 class="main__grid__card__title">
 					{{ name }}
 				</h2>
-
 				<section class="main__grid__card__items">
-					<article v-for="(key, index) in Object.keys(items)" :key="index" class="main__grid__card__items__item" :style="`background-image: url(${getImage(items, key)})`"></article>
+					<article v-for="(key, index) in Object.keys(items)" :key="index" class="main__grid__card__items__item" :style="`background-image: url(${getImage(items, key)})`" :class="items[key].have > 0 ? 'checked' : ''"></article>
 				</section>
 			</AppMainCard>
 		</section>
@@ -70,6 +69,7 @@ export default {
 				@include name-plate;
 				flex-grow: 1;
 				pointer-events: none;
+				transition: background-color 250ms;
 			}
 			&__items {
 				display: grid;
@@ -89,22 +89,9 @@ export default {
 					&::before {
 						position: absolute;
 						content: "";
-						display: block;
-						top: 0;
 						height: 100%;
 						width: 100%;
 						box-shadow: inset 3px 3px 3px rgba($color: #000000, $alpha: 0.5);
-					}
-					&::after {
-						position: absolute;
-                        top:50%;
-                        left:50%;
-                        transform: translate(-50%, -50%);
-						background-color: greenyellow;
-						width: 80%;
-						height: 80%;
-						content: "";
-						mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') no-repeat center;
 					}
 				}
 			}
