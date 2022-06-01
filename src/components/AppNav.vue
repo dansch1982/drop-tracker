@@ -85,7 +85,6 @@ export default {
 					background-color: var(--color-secondary-dark);
 					transition: transform 150ms;
 					transform-origin: right;
-					opacity: 0;
 					transform: scaleX(0);
 					@media (max-width: $breakpoint-xs) {
 						transform-origin: bottom;
@@ -94,7 +93,6 @@ export default {
 					}
 				}
 				&:hover::before {
-					opacity: 1;
 					transform-origin: left;
 					transform: scale(1);
 					@media (max-width: $breakpoint-xs) {
