@@ -6,11 +6,25 @@
 					{{ name }}
 				</h2>
 				<section class="main__grid__card__items">
-					<article v-for="(key, index) in Object.keys(items)" :key="index" class="main__grid__card__items__item" :style="`background-image: url(${getImage(items, key)})`" :class="items[key].have > 0 ? 'checked' : ''"></article>
+					<button v-for="(key, index) in Object.keys(items)" :key="index" class="main__grid__card__items__item" :style="`background-image: url(${getImage(items, key)})`" :class="items[key].have > 0 ? 'checked' : ''" @click="editItem($event, name, items, key)"></button>
 				</section>
 			</AppMainCard>
 		</section>
 	</main>
+	<section class="overlay" @click.self="reset" ref="overlay">
+		<section class="overlay__popup" ref="popup">
+			<section class="overlay__popup__title">
+				<h2 class="overlay__popup__title__name">{{ current.name }}</h2>
+				<button class="overlay__popup__title__close" @click.self="reset">✖</button>
+			</section>
+			<select @change="changeSource($event)" class="overlay__popup__source" data-popup="source" id="source">
+				<option value="0">None</option>
+				<option value="1">Raid</option>
+				<option value="2">Tome</option>
+			</select>
+			<button :class="current.item.have > 0 ? 'checked overlay__popup__have' : 'overlay__popup__have'" @click="toggleHave"></button>
+		</section>
+	</section>
 </template>
 
 <script>
@@ -20,9 +34,34 @@ export default {
 	data() {
 		return {
 			playerStore,
+			current: {},
+			nullObject: {
+				name: null,
+				item: {
+					source: null,
+					key: null,
+					have: null,
+				},
+			},
 		};
 	},
+	beforeMount() {
+		this.current = this.nullObject;
+	},
 	methods: {
+		changeSource($event) {
+			const { item } = this.current;
+			item.source = parseInt($event.target.value);
+		},
+		toggleHave() {
+			const { item } = this.current;
+			item.have = 1 - item.have;
+		},
+		reset() {
+			this.$refs.overlay.classList.remove("display-grid");
+			this.$refs.popup.classList.remove("popup-width");
+			this.current = this.nullObject;
+		},
 		getImage(items, key) {
 			const item = key.split("_").pop();
 			let src = "";
@@ -34,7 +73,7 @@ export default {
 					src += `coffer_${item}`;
 					break;
 				case 2:
-					src += `upgrade_${items[key].side === 0 ? "left" : "right"}`;
+					src += `upgrade_${item}`;
 					break;
 				default:
 					break;
@@ -45,6 +84,27 @@ export default {
 			} catch (error) {
 				return "";
 			}
+		},
+		editItem($event, ...args) {
+			if ($event.pointerId >= 1) {
+				$event.target.blur();
+			}
+			const [name, items, key] = args;
+
+			const item = items[key];
+			this.current = {
+				name,
+				key: key,
+				item,
+			};
+			const source = this.$refs.popup.querySelector("[data-popup='source']");
+			[...source.childNodes].some((node) => {
+				if (parseInt(node.value) === item.source) {
+					return (source.value = node.value);
+				}
+			});
+			this.$refs.overlay.classList.add("display-grid");
+			this.$refs.popup.classList.add("popup-width");
 		},
 	},
 	components: { AppMainCard },
@@ -80,12 +140,17 @@ export default {
 				width: 100%;
 				&__item {
 					position: relative;
+					display: flex;
 					background-color: #d9d9d9;
 					background-size: cover;
 					aspect-ratio: 1;
 					border-radius: 10px;
 					overflow: hidden;
-					border-radius: 10px;
+					border: none;
+					outline: none;
+					@include scale(1.05);
+					transition: transform 50ms;
+					cursor: pointer;
 					&::before {
 						position: absolute;
 						content: "";
@@ -93,7 +158,98 @@ export default {
 						width: 100%;
 						box-shadow: inset 3px 3px 3px rgba($color: #000000, $alpha: 0.5);
 					}
+					&::after {
+						position: absolute;
+						content: "";
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+						background-color: greenyellow;
+						transition: 200ms;
+						width: 0%;
+						aspect-ratio: 1;
+						mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') no-repeat center;
+					}
 				}
+			}
+		}
+	}
+}
+.overlay {
+	display: none;
+	place-items: center;
+	z-index: 10;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	background-color: rgba($color: #000000, $alpha: 0.5);
+	&__popup {
+		display: grid;
+		gap: 1em;
+		width: calc(100% - 2em);
+		max-width: max-content;
+		overflow: hidden;
+		background-color: whitesmoke;
+		padding: 1em;
+		&__title {
+			display: flex;
+			gap: 1em;
+			&__name {
+				display: flex;
+				flex: 1;
+				justify-content: center;
+				align-items: center;
+			}
+			&__close {
+				margin-left: auto;
+				background-color: unset;
+				border: none;
+				font-size: 1.5rem;
+				cursor: pointer;
+				transition: transform 100ms;
+				@include scale(1.2);
+			}
+		}
+		&__source {
+			outline: none;
+			padding: 0.5em 1em;
+			border-radius: 0;
+		}
+		&__have {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 1em;
+			border: none;
+			outline: none;
+			background-color: unset;
+			cursor: pointer;
+			font-size: 1rem;
+			width: 2em;
+			aspect-ratio: 1;
+			border: 2px solid black;
+			background-color: var(--color-primary);
+			&::before {
+				position: absolute;
+				left: calc(100% + 1em);
+				content: "Have";
+				display: block;
+			}
+			&::after {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				content: "";
+				display: block;
+				aspect-ratio: 1;
+				background-color: greenyellow;
+				width: 0;
+				transition: 200ms;
+				mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') no-repeat center;
 			}
 		}
 	}

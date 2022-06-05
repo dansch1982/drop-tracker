@@ -9,9 +9,6 @@
 	&:focus {
 		transform: scale($scale);
 	}
-	&:active {
-		transform: scale(1);
-	}
 }
 @mixin name-plate {
 	background-color: var(--color-secondary);
