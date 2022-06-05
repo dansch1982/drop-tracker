@@ -62,7 +62,6 @@ export default {
 		},
 		reset() {
 			this.$refs.overlay.classList.remove("display-grid");
-			this.$refs.popup.classList.remove("popup-width");
 			this.current = this.nullObject;
 		},
 		getImage(items, key) {
@@ -107,7 +106,9 @@ export default {
 				}
 			});
 			this.$refs.overlay.classList.add("display-grid");
-			this.$refs.popup.classList.add("popup-width");
+			this.$nextTick(() => {
+				this.$refs.popup.classList.add("scale-1");
+			});
 		},
 		formatName(string) {
 			if (typeof string === "string") {
