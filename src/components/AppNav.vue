@@ -22,7 +22,7 @@ export default {
 	methods: {
 		scrollToPlayer($event, name) {
 			$event.target.blur();
-			this.$emit("update:modelValue", !this.modelValue);
+			this.$emit("update:modelValue", false);
 			this.$nextTick(() => {
 				const element = document.querySelector(`[data-player='${name}']`);
 				element.scrollIntoView({ block: "start" });
@@ -45,7 +45,7 @@ export default {
 <style lang="scss" scoped>
 @import "@/assets/style/imports";
 .nav {
-	@media (min-width: $breakpoint-s) {
+	@media (min-width: calc($breakpoint-s + 1px)) {
 		display: grid !important;
 	}
 	&__ul {

@@ -17,12 +17,15 @@
 				<h2 class="overlay__popup__title__name">{{ current.name }}</h2>
 				<button class="overlay__popup__title__close" @click.self="reset">✖</button>
 			</section>
-			<select @change="changeSource($event)" class="overlay__popup__source" data-popup="source" id="source">
-				<option value="0">None</option>
-				<option value="1">Raid</option>
-				<option value="2">Tome</option>
-			</select>
-			<button :class="current.item.have > 0 ? 'checked overlay__popup__have' : 'overlay__popup__have'" @click="toggleHave"></button>
+			<section class="overlay__popup__item">
+				<article class="overlay__popup__item__key">{{ formatName(current.key) }}</article>
+				<select @change="changeSource($event)" class="overlay__popup__item__source" data-popup="source" id="source">
+					<option value="0">None</option>
+					<option value="1">Raid</option>
+					<option value="2">Tome</option>
+				</select>
+				<button :class="current.item.have > 0 ? 'checked overlay__popup__item__have' : 'overlay__popup__item__have'" @click="toggleHave"></button>
+			</section>
 		</section>
 	</section>
 </template>
@@ -105,6 +108,11 @@ export default {
 			});
 			this.$refs.overlay.classList.add("display-grid");
 			this.$refs.popup.classList.add("popup-width");
+		},
+		formatName(string) {
+			if (typeof string === "string") {
+				return string.split("_").join(" ");
+			}
 		},
 	},
 	components: { AppMainCard },
@@ -189,20 +197,26 @@ export default {
 		display: grid;
 		gap: 1em;
 		width: calc(100% - 2em);
-		max-width: max-content;
+		max-width: 400px;
 		overflow: hidden;
-		background-color: whitesmoke;
+		background-color: var(--color-bg);
 		padding: 1em;
 		&__title {
 			display: flex;
+			justify-content: space-between;
 			gap: 1em;
+			overflow: hidden;
 			&__name {
-				display: flex;
+				text-align: center;
 				flex: 1;
-				justify-content: center;
-				align-items: center;
+				padding: 0.5rem 0.25em;
+				overflow: hidden;
+				font-size: 2rem;
+				white-space: nowrap;
+				text-overflow: ellipsis;
 			}
 			&__close {
+				padding: 0.5rem 0.25em;
 				margin-left: auto;
 				background-color: unset;
 				border: none;
@@ -212,44 +226,59 @@ export default {
 				@include scale(1.2);
 			}
 		}
-		&__source {
-			outline: none;
-			padding: 0.5em 1em;
-			border-radius: 0;
-		}
-		&__have {
-			position: relative;
-			display: flex;
-			justify-content: center;
-			align-items: center;
+		&__item {
+			margin: auto;
+			display: grid;
 			gap: 1em;
-			border: none;
-			outline: none;
-			background-color: unset;
-			cursor: pointer;
-			font-size: 1rem;
-			width: 2em;
-			aspect-ratio: 1;
-			border: 2px solid black;
-			background-color: var(--color-primary);
-			&::before {
-				position: absolute;
-				left: calc(100% + 1em);
-				content: "Have";
-				display: block;
+			max-width: 25ch;
+			width: 100%;
+
+			&__key {
+				font-size: 1.5rem;
+				text-transform: capitalize;
+				text-align: center;
 			}
-			&::after {
-				position: absolute;
-				top: 50%;
-				left: 50%;
-				transform: translate(-50%, -50%);
-				content: "";
-				display: block;
+			&__source {
+				outline: none;
+				padding: 0.5em 1em;
+				border-radius: 0;
+				width: 100%;
+				margin: auto;
+			}
+			&__have {
+				position: relative;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				gap: 1em;
+				border: none;
+				outline: none;
+				background-color: unset;
+				cursor: pointer;
+				font-size: 1rem;
+				width: 2em;
 				aspect-ratio: 1;
-				background-color: greenyellow;
-				width: 0;
-				transition: 200ms;
-				mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') no-repeat center;
+				border: 2px solid black;
+				background-color: var(--color-primary);
+				&::before {
+					position: absolute;
+					left: calc(100% + 1em);
+					content: "Have";
+					display: block;
+				}
+				&::after {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					content: "";
+					display: block;
+					aspect-ratio: 1;
+					background-color: greenyellow;
+					width: 0;
+					transition: 200ms;
+					mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>') no-repeat center;
+				}
 			}
 		}
 	}

@@ -24,7 +24,7 @@ for (let i = 0; i < 8; i++) {
 	const left_ring = item(0, 0, 1);
 
 	store.players.push({
-		name: `Player ${i + 1}`,
+		name: `Player Player ${i + 1}`,
 		items: {
 			weapon,
 			head,
