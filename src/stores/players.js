@@ -2,6 +2,7 @@ import { reactive } from "vue";
 
 const store = reactive({
 	players: [],
+	sources: ["none", "raid", "tome"],
 });
 
 for (let i = 0; i < 8; i++) {

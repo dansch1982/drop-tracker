@@ -20,9 +20,7 @@
 			<section class="overlay__popup__item">
 				<article class="overlay__popup__item__key">{{ formatName(current.key) }}</article>
 				<select @change="changeSource($event)" class="overlay__popup__item__source" data-popup="source" id="source">
-					<option value="0">None</option>
-					<option value="1">Raid</option>
-					<option value="2">Tome</option>
+					<option v-for="(source, index) in playerStore.sources" :value="index" :key="index">{{ source }}</option>
 				</select>
 				<button :class="current.item.have > 0 ? 'checked overlay__popup__item__have' : 'overlay__popup__item__have'" @click="toggleHave"></button>
 			</section>
@@ -245,6 +243,7 @@ export default {
 				border-radius: 0;
 				width: 100%;
 				margin: auto;
+				text-transform: capitalize;
 			}
 			&__have {
 				position: relative;
