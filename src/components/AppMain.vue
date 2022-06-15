@@ -46,6 +46,37 @@ export default {
 			},
 		};
 	},
+	created() {
+		playerStore.players.length = 0;
+		const url = new URL("http://localhost/tracker.php?get=players");
+		fetch(url)
+			.then((data) => {
+				if (data.status === 200) {
+					return data.json();
+				} else {
+					return "[]";
+				}
+			})
+			.then((json) => {
+				const array = JSON.parse(json);
+				array.forEach((element) => {
+					const { id, name } = element;
+					delete element.id;
+					delete element.name;
+					const items = {};
+					Object.entries(element).forEach((item) => {
+						const [prop, info] = item;
+						items[prop] = playerStore.createItem(...Array.from(info.split(",")).map(item => parseInt(item)));
+					});
+					const player = {
+						id,
+						name,
+						items,
+					};
+					playerStore.players.push(player);
+				});
+			});
+	},
 	beforeMount() {
 		this.current = this.nullObject;
 	},
