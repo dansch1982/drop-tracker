@@ -17,6 +17,12 @@ export default {
 
 <style lang="scss">
 @import "@/assets/style/imports";
+html {
+  scroll-behavior: smooth;
+}
+*, *:before, *:after {
+  box-sizing: border-box;
+}
 .app {
   width: 100vw;
   height: 100vh;

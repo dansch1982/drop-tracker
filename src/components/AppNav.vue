@@ -25,7 +25,7 @@ export default {
 			this.$emit("update:modelValue", false);
 			this.$nextTick(() => {
 				const element = document.querySelector(`[data-player='${name}']`);
-				element.scrollIntoView({ block: "start" });
+				element.scrollIntoView({ block: "start", behavior: "smooth" });
 				const prev = document.querySelector(".bg-secondary-dark");
 				if (prev) {
 					prev.classList.remove("bg-secondary-dark", "text-underline");
