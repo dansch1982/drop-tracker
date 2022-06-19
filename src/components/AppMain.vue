@@ -47,8 +47,8 @@ export default {
 		};
 	},
 	created() {
-		playerStore.players.length = 0;
-		const url = new URL("http://localhost/tracker.php?players");
+		//playerStore.players.length = 0;
+		const url = new URL("http://localhost/players");
 		fetch(url)
 			.then((data) => {
 				if (data.status === 200) {
