@@ -47,7 +47,7 @@ export default {
 		};
 	},
 	created() {
-		//playerStore.players.length = 0;
+		playerStore.players.length = 0;
 		const url = new URL("http://localhost/players");
 		fetch(url)
 			.then((data) => {
@@ -57,8 +57,7 @@ export default {
 					return "[]";
 				}
 			})
-			.then((json) => {
-				const array = JSON.parse(json);
+			.then((array) => {
 				array.forEach((element) => {
 					const { id, name } = element;
 					delete element.id;
